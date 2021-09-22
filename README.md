@@ -1,1 +1,1 @@
-# laughing-meme
+# Chapter Release Ping Bot
