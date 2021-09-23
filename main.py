@@ -127,7 +127,7 @@ async def on_ready():
     print('------')
 
 
-TOKEN = "ODkwNjk0Njc5MjgzMjY5NjYy.YUziDw.5N2VCCCm6Qfb1e3VKTBPkfl_oTs"
+TOKEN = "token_here"
 
 bot.add_cog(BotDS(bot))
 bot.add_cog(CH(bot))
