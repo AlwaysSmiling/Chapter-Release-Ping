@@ -49,17 +49,17 @@ class BotDS(commands.Cog):
     async def setbotdsrole(self, ctx, id):
         try:
             self.role = f'<@{id}>'
-            ctx.send("Role Id Set successfully.")
+            await ctx.send("Role Id Set successfully.")
         except:
-            ctx.send("failed..... T_T ")
+            await ctx.send("failed..... T_T ")
 
     @commands.command()
     async def setbotdschannelid(self, ctx, channelid: int):
         try:
             self.channelid = channelid
-            ctx.send("Channel Id Set successfully.")
+            await ctx.send("Channel Id Set successfully.")
         except:
-            ctx.send("failed..... T_T ")
+            await ctx.send("failed..... T_T ")
 
 
 class CH(commands.Cog):
@@ -81,11 +81,9 @@ class CH(commands.Cog):
     @looper.before_loop
     async def checks(self):
         if self.channelid is None:
-            await self.get_channel(889410354155753486).send(
-                "Hey <@556157454623309835>, Channel Id for CH is not set.")
+            print("Hey <@556157454623309835>, Channel Id for CH is not set.")
         if self.role is None:
-            await self.get_channel(889410354155753486).send(
-                "Hey <@556157454623309835>, Role Id for CH is not set.")
+            print("Hey <@556157454623309835>, Role Id for CH is not set.")
 
     @commands.command()
     async def startchlooper(self, ctx):
@@ -107,17 +105,17 @@ class CH(commands.Cog):
     async def setchrole(self, ctx, id: str):
         try:
             self.role = f'<@{id}>'
-            ctx.send("Role Id Set successfully.")
+            await ctx.send("Role Id Set successfully.")
         except:
-            ctx.send("failed..... T_T ")
+            await ctx.send("failed..... T_T ")
 
     @commands.command()
     async def setchchannelid(self, ctx, channelid: int):
         try:
             self.channelid = channelid
-            ctx.send("Channel Id Set successfully.")
+            await ctx.send("Channel Id Set successfully.")
         except:
-            ctx.send("failed..... T_T ")
+            await ctx.send("failed..... T_T ")
 
 
 bot = commands.Bot(command_prefix=commands.when_mentioned_or(';~'))
@@ -131,6 +129,6 @@ async def on_ready():
 
 TOKEN = "Nzk0MTk2ODA1NTkxMjM2NjE4.X-3TaQ.sIY2fIfYOdsJMTWMUTadid3bzD8"
 
-bot.add_cog(BotDS)
-bot.add_cog(CH)
+bot.add_cog(BotDS(bot))
+bot.add_cog(CH(bot))
 bot.run(TOKEN)
