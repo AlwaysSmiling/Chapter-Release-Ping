@@ -1,35 +1,38 @@
 from bs4 import BeautifulSoup, SoupStrainer
 import requests
-from replit import db
 '''side not:
 Football players are too much for one hour
 Too much stamina, and too little strength control --Noel'''
 
 
-class MonitorBotDS:
-    def __init__(self):
-        self.url = "add you webnovel's catalog url" #catalog url can be obtained by right-clicking table of content on the novel page and copying link address.
-        self.strainer = SoupStrainer("a", class_="ell lst-chapter dib vam")
+class Monitor:
+    def __init__(self, name: str, url: str):
+        """Initialize the Monitor with Novel's name and url.
 
-    def ping(self):
+        Keyword arguments:
+        name -- name of the novel.
+        url -- url to the novel's main page.
+
+        """
+        self.name = name
+        self.url = url + "/catalog"
+        self.strainer = SoupStrainer("a", class_="ell lst-chapter dib vam")
+        self.latestchapter = self.ini()
+
+    def ini(self) -> str:
+        """Initially called to retrieve latestchapter Chapter name at obj creation."""
+        response = requests.get(self.url)
+        return BeautifulSoup(response.text, 'lxml',
+                             parse_only=self.strainer).get_text()
+
+    def ping(self) -> bool:
+        """Pings the Webnovel Site and return if there's a change."""
         response = requests.get(self.url)
         soup = BeautifulSoup(response.text, 'lxml', parse_only=self.strainer)
-        new_priv = soup.get_text()
-        if new_priv != db["botds"]:
-            db["botds"] = new_priv
+        chaptername = soup.get_text()
+        if chaptername == "" or chaptername == self.latestchapter:
+            return False
+        else:
+            #If new chapter is released then update self.latestchapter and return True
+            self.latestchapter = chaptername
             return True
-        return False
-
-class MonitorCH:
-    def __init__(self):
-        self.url = "add you webnovel's catalog url" #catalog url can be obtained by right-clicking table of content on the novel page and copying link address.
-        self.strainer = SoupStrainer("a", class_="ell lst-chapter dib vam")
-
-    def ping(self):
-        response = requests.get(self.url)
-        soup = BeautifulSoup(response.text, 'lxml', parse_only=self.strainer)
-        new_priv = soup.get_text()
-        if new_priv != db["ch"]: 
-            db["ch"] = new_priv           
-            return True
-        return False
