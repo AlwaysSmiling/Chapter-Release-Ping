@@ -16,7 +16,7 @@ class BotDS(commands.Cog):
     @tasks.loop(seconds=30.0)
     async def looper(self):
         if self.pinger.ping() and len(self.pinger.latestchapter) > 15:
-            await self.get_channel(self.channelid).send(
+            await self.bot.get_channel(self.channelid).send(
                 f"Hey {self.role} **{self.pinger.name}** has released a new chapter ||{self.pinger.latestchapter[14:]}||"
             )
 
@@ -48,7 +48,7 @@ class BotDS(commands.Cog):
     @commands.command()
     async def setbotdsrole(self, ctx, id):
         try:
-            self.role = f'<@{id}>'
+            self.role = f'<@&{id}>'
             await ctx.send("Role Id Set successfully.")
         except:
             await ctx.send("failed..... T_T ")
@@ -60,6 +60,12 @@ class BotDS(commands.Cog):
             await ctx.send("Channel Id Set successfully.")
         except:
             await ctx.send("failed..... T_T ")
+
+    @commands.command()
+    async def triggerbotds(self, ctx):
+        await self.bot.get_channel(self.channelid).send(
+            f"Hey {self.role} **{self.pinger.name}** has released a new chapter ||{self.pinger.latestchapter[14:]}||"
+        )
 
 
 class CH(commands.Cog):
@@ -74,7 +80,7 @@ class CH(commands.Cog):
     @tasks.loop(seconds=30.0)
     async def looper(self):
         if self.pinger.ping() and len(self.pinger.latestchapter) > 3:
-            await self.get_channel(self.channelid).send(
+            await self.bot.get_channel(self.channelid).send(
                 f"Hey {self.role} **{self.pinger.name}** has released a new ||{self.pinger.latestchapter}||"
             )
 
@@ -104,7 +110,7 @@ class CH(commands.Cog):
     @commands.command()
     async def setchrole(self, ctx, id: str):
         try:
-            self.role = f'<@{id}>'
+            self.role = f'<@&{id}>'
             await ctx.send("Role Id Set successfully.")
         except:
             await ctx.send("failed..... T_T ")
@@ -116,6 +122,12 @@ class CH(commands.Cog):
             await ctx.send("Channel Id Set successfully.")
         except:
             await ctx.send("failed..... T_T ")
+
+    @commands.command()
+    async def triggerch(self, ctx):
+        await self.bot.get_channel(self.channelid).send(
+            f"Hey {self.role} **{self.pinger.name}** has released a new ||{self.pinger.latestchapter}||"
+        )
 
 
 bot = commands.Bot(command_prefix=commands.when_mentioned_or(';~'))
