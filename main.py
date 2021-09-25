@@ -1,7 +1,8 @@
 import discord
 from discord.ext import commands, tasks
 import monitors
-
+import os
+#from keep_alive import keep_alive
 
 class BotDS(commands.Cog):
     def __init__(self, bot):
@@ -10,8 +11,9 @@ class BotDS(commands.Cog):
             "Birth of the Demonic Sword",
             "https://www.webnovel.com/book/birth-of-the-demonic-sword_14187175405584205"
         )
-        self.role = None
-        self.channelid = None
+        self.role = '<@&889458285533622312>'
+        self.channelid = 889445514473525269
+        self.looper.start()
 
     @tasks.loop(seconds=30.0)
     async def looper(self):
@@ -62,10 +64,15 @@ class BotDS(commands.Cog):
             await ctx.send("failed..... T_T ")
 
     @commands.command()
+    async def statusbotds(self, ctx):
+        await ctx.send(f"Role: {self.role}.\n Channel: <#{self.channelid}>.\n Latest: {self.pinger.latestchapter}")
+
+
+    @commands.command()
     async def triggerbotds(self, ctx):
         await self.bot.get_channel(self.channelid).send(
-            f"Hey {self.role} **{self.pinger.name}** has released a new chapter ||{self.pinger.latestchapter[14:]}||"
-        )
+                f"Hey {self.role} **{self.pinger.name}** has released a new chapter ||{self.pinger.latestchapter[14:]}||"
+            )
 
 
 class CH(commands.Cog):
@@ -74,8 +81,9 @@ class CH(commands.Cog):
         self.pinger = monitors.Monitor(
             "Chaos' Heir",
             "https://www.webnovel.com/book/chaos'-heir_20199782605918605")
-        self.role = None
-        self.channelid = None
+        self.role = '<@&889458433181491210>'
+        self.channelid = 889445514473525269
+        self.looper.start()
 
     @tasks.loop(seconds=30.0)
     async def looper(self):
@@ -124,10 +132,14 @@ class CH(commands.Cog):
             await ctx.send("failed..... T_T ")
 
     @commands.command()
+    async def statusch(self, ctx):
+        await ctx.send(f"Role: {self.role}.\n Channel: <#{self.channelid}>.\n Latest: {self.pinger.latestchapter}")
+
+    @commands.command()
     async def triggerch(self, ctx):
         await self.bot.get_channel(self.channelid).send(
-            f"Hey {self.role} **{self.pinger.name}** has released a new ||{self.pinger.latestchapter}||"
-        )
+                f"Hey {self.role} **{self.pinger.name}** has released a new ||{self.pinger.latestchapter}||"
+            )
 
 
 bot = commands.Bot(command_prefix=commands.when_mentioned_or(';~'))
@@ -138,9 +150,9 @@ async def on_ready():
     print(f'Logged in as {bot.user} (ID: {bot.user.id})')
     print('------')
 
-
-TOKEN = "token_here"
+TOKEN = os.environ["token"]
 
 bot.add_cog(BotDS(bot))
 bot.add_cog(CH(bot))
+keep_alive()
 bot.run(TOKEN)
