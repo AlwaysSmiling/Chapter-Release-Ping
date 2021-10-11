@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands, tasks
 import monitors
 import os
-#from keep_alive import keep_alive
+
 
 class BotDS(commands.Cog):
     def __init__(self, bot):
@@ -32,47 +32,16 @@ class BotDS(commands.Cog):
                 "Hey <@556157454623309835>, Role Id for BotDS is not set.")
 
     @commands.command()
-    async def startbotdslooper(self, ctx):
-        try:
-            self.looper.start()
-            await ctx.send("successfully started loop")
-        except:
-            await ctx.send("yea, somebody somewhere fucked up")
-
-    @commands.command()
-    async def stopbotdslooper(self, ctx):
-        try:
-            self.looper.cancel()
-            await ctx.send("successfully stopped loop")
-        except:
-            await ctx.send("yea, somebody somewhere fucked up")
-
-    @commands.command()
-    async def setbotdsrole(self, ctx, id):
-        try:
-            self.role = f'<@&{id}>'
-            await ctx.send("Role Id Set successfully.")
-        except:
-            await ctx.send("failed..... T_T ")
-
-    @commands.command()
-    async def setbotdschannelid(self, ctx, channelid: int):
-        try:
-            self.channelid = channelid
-            await ctx.send("Channel Id Set successfully.")
-        except:
-            await ctx.send("failed..... T_T ")
-
-    @commands.command()
     async def statusbotds(self, ctx):
-        await ctx.send(f"Role: {self.role}.\n Channel: <#{self.channelid}>.\n Latest: {self.pinger.latestchapter}")
-
+        await ctx.send(
+            f"Role: {self.role}.\n Channel: <#{self.channelid}>.\n Latest: {self.pinger.latestchapter}"
+        )
 
     @commands.command()
     async def triggerbotds(self, ctx):
         await self.bot.get_channel(self.channelid).send(
-                f"Hey {self.role} **{self.pinger.name}** has released a new chapter ||{self.pinger.latestchapter[14:]}||"
-            )
+            f"Hey {self.role} **{self.pinger.name}** has released a new chapter ||{self.pinger.latestchapter[14:]}||"
+        )
 
 
 class CH(commands.Cog):
@@ -100,46 +69,16 @@ class CH(commands.Cog):
             print("Hey <@556157454623309835>, Role Id for CH is not set.")
 
     @commands.command()
-    async def startchlooper(self, ctx):
-        try:
-            self.looper.start()
-            await ctx.send("successfully started loop")
-        except:
-            await ctx.send("yea, somebody somewhere fucked up")
-
-    @commands.command()
-    async def stopchlooper(self, ctx):
-        try:
-            self.looper.cancel()
-            await ctx.send("successfully stopped loop")
-        except:
-            await ctx.send("yea, somebody somewhere fucked up")
-
-    @commands.command()
-    async def setchrole(self, ctx, id: str):
-        try:
-            self.role = f'<@&{id}>'
-            await ctx.send("Role Id Set successfully.")
-        except:
-            await ctx.send("failed..... T_T ")
-
-    @commands.command()
-    async def setchchannelid(self, ctx, channelid: int):
-        try:
-            self.channelid = channelid
-            await ctx.send("Channel Id Set successfully.")
-        except:
-            await ctx.send("failed..... T_T ")
-
-    @commands.command()
     async def statusch(self, ctx):
-        await ctx.send(f"Role: {self.role}.\n Channel: <#{self.channelid}>.\n Latest: {self.pinger.latestchapter}")
+        await ctx.send(
+            f"Role: {self.role}.\n Channel: <#{self.channelid}>.\n Latest: {self.pinger.latestchapter}"
+        )
 
     @commands.command()
     async def triggerch(self, ctx):
         await self.bot.get_channel(self.channelid).send(
-                f"Hey {self.role} **{self.pinger.name}** has released a new ||{self.pinger.latestchapter}||"
-            )
+            f"Hey {self.role} **{self.pinger.name}** has released a new ||{self.pinger.latestchapter}||"
+        )
 
 
 bot = commands.Bot(command_prefix=commands.when_mentioned_or(';~'))
@@ -150,9 +89,10 @@ async def on_ready():
     print(f'Logged in as {bot.user} (ID: {bot.user.id})')
     print('------')
 
-TOKEN = os.environ["token"]
+
+TOKEN = os.environ["TOKEN"]
 
 bot.add_cog(BotDS(bot))
 bot.add_cog(CH(bot))
-keep_alive()
+
 bot.run(TOKEN)
