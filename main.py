@@ -11,8 +11,8 @@ class BotDS(commands.Cog):
             "Birth of the Demonic Sword",
             "https://www.webnovel.com/book/birth-of-the-demonic-sword_14187175405584205"
         )
-        self.role = '<@&889458285533622312>'
-        self.channelid = 889445514473525269
+        self.role = '<@&884991983943307265>'
+        self.channelid = 884993117940486154
         self.looper.start()
 
     @tasks.loop(seconds=30.0)
@@ -50,8 +50,8 @@ class CH(commands.Cog):
         self.pinger = monitors.Monitor(
             "Chaos' Heir",
             "https://www.webnovel.com/book/chaos'-heir_20199782605918605")
-        self.role = '<@&889458433181491210>'
-        self.channelid = 889445514473525269
+        self.role = '<@&884992180459040798>'
+        self.channelid = 884993117940486154
         self.looper.start()
 
     @tasks.loop(seconds=30.0)
