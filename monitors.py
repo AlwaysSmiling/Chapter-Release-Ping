@@ -28,7 +28,8 @@ class Monitor:
 
     def ping(self) -> bool:
         """Pings the Webnovel Site and return if there's a change."""
-        response = requests.get(self.url)
+        headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.74 Safari/537.36 Edg/99.0.1150.46'}
+        response = requests.get(self.url, headers=headers)
         soup = BeautifulSoup(response.text, 'lxml', parse_only=self.strainer)
         chaptername = soup.get_text()
         if chaptername == "" or chaptername == self.latestchapter:
