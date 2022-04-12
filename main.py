@@ -80,6 +80,42 @@ class CH(commands.Cog):
             f"Hey {self.role} **{self.pinger.name}** has released a new ||{self.pinger.latestchapter}||"
         )
 
+class Test(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+        self.pinger = monitors.Monitor(
+            "Testing",
+            "https://www.webnovel.com/book/dljagblsdkjfkljhlkjhd_22971209805369105")
+        self.role = '<@&963362745745567774>'
+        self.channelid = 889445514473525269
+        self.looper.start()
+
+    @tasks.loop(seconds=30.0)
+    async def looper(self):
+        if self.pinger.ping() and len(self.pinger.latestchapter) > 3:
+            await self.bot.get_channel(self.channelid).send(
+                f"Hey {self.role} **{self.pinger.name}** has released a new ||{self.pinger.latestchapter}||"
+            )
+
+    @looper.before_loop
+    async def checks(self):
+        if self.channelid is None:
+            print("Hey <@556157454623309835>, Channel Id for Test is not set.")
+        if self.role is None:
+            print("Hey <@556157454623309835>, Role Id for Test is not set.")
+
+    @commands.command()
+    async def statustest(self, ctx):
+        await ctx.send(
+            f"Role: {self.role}.\n Channel: <#{self.channelid}>.\n Latest: {self.pinger.latestchapter}"
+        )
+
+    @commands.command()
+    async def triggertest(self, ctx):
+        await self.bot.get_channel(self.channelid).send(
+            f"Hey {self.role} **{self.pinger.name}** has released a new ||{self.pinger.latestchapter}||"
+        )
+
 
 bot = commands.Bot(command_prefix=commands.when_mentioned_or(';~'))
 
@@ -94,5 +130,6 @@ TOKEN = os.environ["TOKEN"]
 
 bot.add_cog(BotDS(bot))
 bot.add_cog(CH(bot))
+bot.add_cog(Test(bot))
 
 bot.run(TOKEN)
